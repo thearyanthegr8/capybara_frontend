@@ -13,15 +13,23 @@ import {
 } from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
 import { custom } from "zod";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 function Page() {
   const p_id = usePathname().split("/")[2];
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<any>(true);
   const [prescription, setPrescription] = useState(null);
   const [userSession, setUserSession] = useState(false);
   const [code, setCode] = useState("");
   const [responseCode, setResponseCode] = useState<number>();
-
   const supabase = createClientComponentClient<Database>();
 
   const fetchData = async (customer_code?: string) => {
@@ -70,9 +78,68 @@ function Page() {
     );
   } else if (responseCode === 200 && prescription) {
     return (
-      <div>
-        <h1>{p_id}</h1>
-        <h1>hello</h1>
+      <div className="mx-4 mt-4">
+        <div className="flex justify-between">
+          <h1 className="text-4xl font-semibold tracking-tight mb-2">
+            Name: {prescription["patientName"]}
+          </h1>
+          <div className="mr-4">
+            <h1 className="text-2xl font-semibold tracking-tight mb-2">
+              Age: {prescription["patientAge"]}
+            </h1>
+
+            <h1 className="text-2xl font-semibold tracking-tight mb-2">
+              Gender: {prescription["patientGender"]}
+            </h1>
+
+            <h1 className="text-2xl font-semibold tracking-tight mb-2">
+              Weight: {prescription["patientWeight"]}
+            </h1>
+            <h1 className="text-2xl font-semibold tracking-tight mb-2">
+              Height: {prescription["patientHeight"]}
+            </h1>
+            <h1 className="text-2xl font-semibold tracking-tight mb-2">
+              Temperature: {prescription["patientTemperatature"]}
+            </h1>
+            {/* <h1 className="text-2xl font-semibold tracking-tight mb-2">
+              Notes: {prescription["notes"]}
+            </h1> */}
+          </div>
+        </div>
+
+        <Table >
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-left ">Medicine Name</TableHead>
+              <TableHead className="text-left ">Quantity/Dosage</TableHead>
+              <TableHead className="text-left ">Before Breakfast</TableHead>
+              <TableHead className="text-left ">After Breakfast</TableHead>
+              <TableHead className="text-left ">Before Lunch</TableHead>
+              <TableHead className="text-left ">After lunch</TableHead>
+              <TableHead className="text-left ">Before Dinner</TableHead>
+              <TableHead className="text-left ">After Dinner</TableHead>
+              <TableHead className="text-left ">Total Quantity</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+              {(prescription["medicines"] as any[]).map(
+                (x: any, index: number) => (
+                  <TableRow>
+                    <TableCell >{x["name"]}</TableCell>
+                    <TableCell >{x["qty"]}</TableCell>
+                    <TableCell >{x["beforeBreakfast"]?"YES":"NO"}</TableCell>
+                    <TableCell >{x["afterBreakfast"]?"YES":"NO"}</TableCell>
+                    <TableCell >{x["beforeLunch"]?"YES":"NO"}</TableCell>
+                    <TableCell >{x["afterLunch"]?"YES":"NO"}</TableCell>
+                    <TableCell >{x["beforeDinner"]?"YES":"NO"}</TableCell>
+                    <TableCell >{x["afterDinner"]?"YES":"NO"}</TableCell>
+                    <TableCell >{x["totalQty"]}</TableCell>
+                  
+            </TableRow>
+                )
+              )}
+          </TableBody>
+        </Table>
       </div>
     );
   } else if (responseCode === 404) {
