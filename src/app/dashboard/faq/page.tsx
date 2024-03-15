@@ -74,8 +74,10 @@ function page() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-      <h2 className="text-xl font-semibold tracking-tight mt-4 mb-2">Pharmacists</h2>
-      <Separator className="mb-2"/>
+      <h2 className="text-xl font-semibold tracking-tight mt-4 mb-2">
+        Pharmacists
+      </h2>
+      <Separator className="mb-2" />
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
           <AccordionTrigger>

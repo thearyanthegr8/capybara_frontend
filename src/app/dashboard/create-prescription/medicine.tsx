@@ -127,7 +127,7 @@ function Medicine({
         <div className="flex gap-2 h-full w-full justify-start items-center">
           <Checkbox
             id="beforeLunch"
-            value={beforeLunch}
+            checked={beforeLunch}
             onCheckedChange={(checked: any) => setBeforeLunch(checked)}
             disabled={loading}
           />
@@ -136,7 +136,7 @@ function Medicine({
           </Label>
           <Checkbox
             id="afterLunch"
-            value={afterLunch}
+            checked={afterLunch}
             onCheckedChange={(checked: any) => setAfterLunch(checked)}
             disabled={loading}
           />
@@ -149,7 +149,7 @@ function Medicine({
         <div className="flex gap-2 h-full w-full justify-start items-center">
           <Checkbox
             id="beforeDinner"
-            value={beforeDinner}
+            checked={beforeDinner}
             onCheckedChange={(checked: any) => setBeforeDinner(checked)}
             disabled={loading}
           />
@@ -158,7 +158,7 @@ function Medicine({
           </Label>
           <Checkbox
             id="afterDinner"
-            value={afterDinner}
+            checked={afterDinner}
             onCheckedChange={(checked: any) => setAfterDinner(checked)}
             disabled={loading}
           />

@@ -8,6 +8,8 @@ export async function GET(req: NextRequest) {
   const p_id = searchParams.get("p_id");
   const customer = searchParams.get("customer_code");
 
+  console.log(customer);
+
   const supabase = createMiddlewareClient<Database>({
     req,
     res: NextResponse.next(),
@@ -28,15 +30,7 @@ export async function GET(req: NextRequest) {
         },
       });
 
-      if (!session) {
-        if (prescriptionExists) {
-          console.log("Not Authorized to view this prescription");
-          return NextResponse.json(
-            { message: "Not Authorized to view this prescription" },
-            { status: 401 }
-          );
-        }
-      } else {
+      if (session) {
         const prescription = await prisma.prescription.findFirst({
           where: {
             p_id,
@@ -56,6 +50,35 @@ export async function GET(req: NextRequest) {
 
         console.log("Prescription found", prescription);
         return NextResponse.json(prescription, { status: 200 });
+      } else {
+        if (prescriptionExists && customer === null) {
+          console.log("Not Authorized to view this prescription");
+          return NextResponse.json(
+            { message: "Not Authorized to view this prescription" },
+            { status: 401 }
+          );
+        } else {
+          console.log("Hello customer");
+          const prescription = await prisma.prescription.findFirst({
+            where: {
+              p_id,
+            },
+            select: {
+              p_id: true,
+              patientName: true,
+              patientAge: true,
+              patientGender: true,
+              patientWeight: true,
+              patientHeight: true,
+              patientTemperature: true,
+              notes: true,
+              medicines: true,
+            },
+          });
+
+          console.log("Prescription found", prescription);
+          return NextResponse.json(prescription, { status: 200 });
+        }
       }
     }
 

@@ -12,30 +12,42 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
+import { custom } from "zod";
 
 function Page() {
   const p_id = usePathname().split("/")[2];
   const [loading, setLoading] = useState(true);
   const [prescription, setPrescription] = useState(null);
   const [userSession, setUserSession] = useState(false);
-  const [customer_code, setCustomerCode] = useState();
+  const [code, setCode] = useState("");
+  const [responseCode, setResponseCode] = useState<number>();
 
   const supabase = createClientComponentClient<Database>();
 
-  const fetchData = async () => {
+  const fetchData = async (customer_code?: string) => {
     setLoading(true);
 
     try {
-      const { data: session } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
       console.log(session);
 
-      if (session !== null) {
+      if (session) {
         setUserSession(true);
         const response = await axios.get(`/api/prescription/view?p_id=${p_id}`);
+        setResponseCode(response.status);
         setPrescription(response.data);
       } else {
         setUserSession(false);
+        if (customer_code !== undefined) {
+          const response = await axios.get(
+            `/api/prescription/view?p_id=${p_id}&customer_code=${customer_code}`
+          );
+          setResponseCode(response.status);
+          setPrescription(response.data);
+        }
       }
     } catch (error) {
       console.error("Error fetching prescription:", error);
@@ -46,7 +58,9 @@ function Page() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+    console.log(responseCode);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [p_id, supabase.auth]);
 
   if (loading) {
     return (
@@ -54,13 +68,26 @@ function Page() {
         <Icons.spinner className="animate-spin h-5 w-5" />
       </div>
     );
-  } else if (!userSession) {
+  } else if (responseCode === 200 && prescription) {
+    return (
+      <div>
+        <h1>{p_id}</h1>
+        <h1>hello</h1>
+      </div>
+    );
+  } else if (responseCode === 404) {
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <h1>Prescription not found</h1>
+      </div>
+    );
+  } else {
     return (
       <div className="h-screen w-full flex justify-center items-center">
         <InputOTP
           maxLength={6}
-          value={customer_code}
-          onChange={(e: any) => setCustomerCode(e.target.value)}
+          value={code}
+          onChange={(e: any) => setCode(e)}
           disabled={loading}
           render={({ slots }: { slots: any }) => (
             <>
@@ -78,20 +105,13 @@ function Page() {
             </>
           )}
         />
-        <Button onClick={fetchData}>Verify</Button>
-      </div>
-    );
-  } else if (prescription === null) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center">
-        <h1>Prescription not found</h1>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <h1>{p_id}</h1>
-        <h1>hello</h1>
+        <Button
+          onClick={async () => {
+            fetchData(code);
+          }}
+        >
+          Verify
+        </Button>
       </div>
     );
   }
