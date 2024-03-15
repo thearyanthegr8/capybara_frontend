@@ -23,6 +23,8 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    console.log(prescriptions);
+
     return NextResponse.json(prescriptions, { status: 200 });
   } catch (e) {
     return NextResponse.json(

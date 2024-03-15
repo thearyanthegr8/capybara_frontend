@@ -13,13 +13,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/types/database.types";
 import { Icons } from "@/components/ui/icons";
-import { Separator } from "@/components/ui/separator";
 
 function Sidebar() {
   const pathname = usePathname();
@@ -143,7 +142,7 @@ function Sidebar() {
                 </Button>
               </Link>
               <Dialog>
-                <DialogTrigger>
+                <DialogTrigger asChild>
                   <Button
                     variant="ghost"
                     className={`w-full justify-start flex gap-2 ${
@@ -171,7 +170,10 @@ function Sidebar() {
                   </DialogHeader>
                   <DialogFooter className="w-full flex gap-2">
                     <DialogClose asChild>
-                      <Link href="mailto:support@capybara.xyz" className="w-1/2" >
+                      <Link
+                        href="mailto:support@capybara.xyz"
+                        className="w-1/2"
+                      >
                         <Button
                           className="w-full"
                           variant={"outline"}

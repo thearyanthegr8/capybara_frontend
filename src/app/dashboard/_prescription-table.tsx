@@ -11,9 +11,11 @@ import {
 } from "@/components/ui/table";
 import moment from "moment";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 function PrescriptionTable({ date }: { date: Date }) {
   const [prescriptions, setPrescriptions] = useState([]); // [Prescription
+  const router = useRouter();
 
   async function getPrescriptions() {
     const res = await fetch(`/api/prescription/get?date=${date}`);
@@ -42,13 +44,18 @@ function PrescriptionTable({ date }: { date: Date }) {
       </TableHeader>
       <TableBody>
         {prescriptions.map((prescription: any) => (
-          <TableRow key={prescription.id}>
+          <TableRow key={prescription.p_id}>
             <TableCell>{prescription.patientName}</TableCell>
             <TableCell>{prescription.patientAge}</TableCell>
             <TableCell>{prescription.patientGender}</TableCell>
             <TableCell>{prescription.patientWeight}</TableCell>
             <TableCell>
-              <Button onClick={() => {}} variant={"outline"}>
+              <Button
+                onClick={() => {
+                  router.push(`/prescription/${prescription.p_id}`);
+                }}
+                variant={"outline"}
+              >
                 View
               </Button>
             </TableCell>
