@@ -16,8 +16,7 @@ export async function middleware(req: NextRequest) {
   } = await supabase.auth.getSession();
 
   if (
-    (req.nextUrl.pathname === "/dashboard" ||
-      req.nextUrl.pathname === "/dashboard") &&
+    (req.nextUrl.pathname === "/dashboard" || req.nextUrl.pathname === "/") &&
     !session
   ) {
     // Redirect to the absolute login URL
