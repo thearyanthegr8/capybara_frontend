@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -35,6 +35,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import Medicine from "./medicine";
 
 const prescriptionSchema = z.object({
   patientName: z.string(),
@@ -61,7 +62,13 @@ function Page() {
     },
   });
 
+  const [medicineNo, setMedicineNo] = React.useState(1);
+
   const medicines: any[] = [];
+
+  useEffect(() => {
+    console.log(medicines);
+  }, [medicines]);
 
   async function onSubmit(values: z.infer<typeof prescriptionSchema>) {
     console.log(values);
@@ -147,6 +154,9 @@ function Page() {
                       className="w-full"
                       variant={"secondary"}
                       type="button"
+                      onClick={() => {
+                        setMedicineNo((prev) => prev + 1);
+                      }}
                     >
                       Add Medicine
                     </Button>
@@ -156,7 +166,7 @@ function Page() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Name</TableHead>
-                    <TableHead className="w-[10rem]">Qty/Day</TableHead>
+                    <TableHead className="w-[20rem]">Qty/Day</TableHead>
                     <TableHead className="w-[10rem]">Breakfast</TableHead>
                     <TableHead className="w-[10rem]">Lunch</TableHead>
                     <TableHead className="w-[10rem]">Dinner</TableHead>
@@ -164,60 +174,9 @@ function Page() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <Input placeholder="Medicine Name" />
-                    </TableCell>
-                    <TableCell>
-                      <Input placeholder="Qty/day" type="number" />
-                    </TableCell>
-                    <TableCell className="">
-                      <div className="flex gap-2 h-full w-full justify-start items-center">
-                        <Checkbox id="beforeBreakfast" />
-                        <Label
-                          htmlFor="beforeBreakfast"
-                          className="cursor-pointer"
-                        >
-                          Before
-                        </Label>
-                        <Checkbox id="afterBreakfast" />
-                        <Label
-                          htmlFor="afterBreakfast"
-                          className="cursor-pointer"
-                        >
-                          After
-                        </Label>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2 h-full w-full justify-start items-center">
-                        <Checkbox id="beforeLunch" />
-                        <Label htmlFor="beforeLunch" className="cursor-pointer">
-                          Before
-                        </Label>
-                        <Checkbox id="afterLunch" />
-                        <Label htmlFor="afterLunch" className="cursor-pointer">
-                          After
-                        </Label>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2 h-full w-full justify-start items-center">
-                        <Checkbox id="beforeDinner" />
-                        <Label
-                          htmlFor="beforeDinner"
-                          className="cursor-pointer"
-                        >
-                          Before
-                        </Label>
-                        <Checkbox id="afterDinner" />
-                        <Label htmlFor="afterDinner" className="cursor-pointer">
-                          After
-                        </Label>
-                      </div>
-                    </TableCell>
-                    <TableCell>123</TableCell>
-                  </TableRow>
+                  {Array.from({ length: medicineNo }).map((_, i) => (
+                    <Medicine key={i} index={i} medicine={medicines} />
+                  ))}
                 </TableBody>
               </Table>
             </div>
