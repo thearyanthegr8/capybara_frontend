@@ -14,7 +14,7 @@ function Page() {
   }, [qrData, router]);
 
   return (
-    <div className="flex flex-col justify-center items-center w-full">
+    <div className="flex flex-col justify-center items-center w-full h-full">
       <QrReader
         onResult={(result, error) => {
           if (!!result) {
