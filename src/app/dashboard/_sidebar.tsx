@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Home, LogOutIcon, Users } from "lucide-react";
+import { Home, LogOutIcon, Users, QrCode, Headset } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -127,6 +127,28 @@ function Sidebar() {
                     <path d="M19.1 4.9C23 8.8 23 15.1 19.1 19" />
                   </svg>
                   FAQ / Help Center
+                </Button>
+              </Link>
+              <Link href="/dashboard/scan">
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start flex gap-2 ${
+                    pathname === "/dashboard/scan" ? "border-2" : ""
+                  }`}
+                >
+                  <QrCode size={16}/>
+                  Scan QR Code
+                </Button>
+              </Link>
+              <Link href="/dashboard/support">
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start flex gap-2 ${
+                    pathname === "/dashboard/spport" ? "border-2" : ""
+                  }`}
+                >
+                  <Headset size={16}/>
+                  Support
                 </Button>
               </Link>
             </div>
