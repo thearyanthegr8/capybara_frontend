@@ -13,6 +13,21 @@ export async function POST(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
+  const newMedicines = medicines.map((medicine: any) => {
+    return {
+      name: medicine.name,
+      qty: medicine.qty,
+      afterLunch: medicine.afterLunch,
+      afterDinner: medicine.afterDinner,
+      afterBreakfast: medicine.afterBreakfast,
+      beforeLunch: medicine.beforeLunch,
+      beforeDinner: medicine.beforeDinner,
+      beforeBreakfast: medicine.beforeBreakfast,
+    };
+  });
+
+  console.log("newMedicines", newMedicines);
+
   try {
     if (session) {
       const prescription = await prisma.prescription.create({
