@@ -2,7 +2,7 @@ import React from "react";
 import LoginForm from "./LoginForm";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import RegisterForm from "../signup/RegisterForm";
+import RegisterForm from "./RegisterForm";
 
 function page() {
   return (

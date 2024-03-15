@@ -31,14 +31,14 @@ export async function middleware(req: NextRequest) {
     console.log(session.user);
   }
 
-  if (req.nextUrl.pathname === "/" && !session) {
+  if (req.nextUrl.pathname === "/dashboard" && !session) {
     // Redirect to the absolute login URL
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/auth", req.url));
   } else if (
-    (req.nextUrl.pathname === "/login" || req.nextUrl.pathname === "/signup") &&
+    (req.nextUrl.pathname === "/auth" || req.nextUrl.pathname === "/") &&
     session
   ) {
-    return NextResponse.redirect(new URL("/", req.url));
+    return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
   return res;
@@ -46,5 +46,5 @@ export async function middleware(req: NextRequest) {
 
 // Ensure the middleware is only called for relevant paths.
 export const config = {
-  matcher: ["/", "/login", "/signup"],
+  matcher: ["/", "/auth", "/dashboard"],
 };
