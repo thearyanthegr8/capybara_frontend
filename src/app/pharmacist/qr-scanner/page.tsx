@@ -1,9 +1,17 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { QrReader } from "react-qr-reader";
 
 function Page() {
   const [qrData, setQrData] = useState<string | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (qrData) {
+      router.push(`/prescription/${qrData}`);
+    }
+  }, [qrData, router]);
 
   return (
     <div className="flex flex-col justify-center items-center w-full">
@@ -18,10 +26,9 @@ function Page() {
             // console.info(error);
           }
         }}
-        className={"w-[300px] h-[300px]"}
+        className={"w-full h-full"}
         constraints={{ facingMode: "environment" }}
       />
-      {qrData && <p className="text-2xl mt-4">{qrData}</p>}
     </div>
   );
 }
