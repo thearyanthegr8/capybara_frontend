@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Home, LogOutIcon, Users, QrCode, Headset } from "lucide-react";
+import { Home, LogOutIcon, Users, QrCode, Headset, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -14,10 +14,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/types/database.types";
 import { Icons } from "@/components/ui/icons";
+import { Separator } from "@/components/ui/separator";
 
 function Sidebar() {
   const pathname = usePathname();
@@ -136,21 +138,58 @@ function Sidebar() {
                     pathname === "/dashboard/scan" ? "border-2" : ""
                   }`}
                 >
-                  <QrCode size={16}/>
+                  <QrCode size={16} />
                   Scan QR Code
                 </Button>
               </Link>
-              <Link href="/dashboard/support">
-                <Button
-                  variant="ghost"
-                  className={`w-full justify-start flex gap-2 ${
-                    pathname === "/dashboard/support" ? "border-2" : ""
-                  }`}
-                >
-                  <Headset size={16}/>
-                  Support
-                </Button>
-              </Link>
+              <Dialog>
+                <DialogTrigger>
+                  <Button
+                    variant="ghost"
+                    className={`w-full justify-start flex gap-2 ${
+                      pathname === "/dashboard/support" ? "border-2" : ""
+                    }`}
+                  >
+                    <Headset size={16} />
+                    Support
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle className="mb-1">Support Form</DialogTitle>
+                    {/* <Separator/> */}
+                    <DialogDescription>
+                      <div className="flex justify-around gap-2 my-1">
+                        <div className="my-auto">Email: </div>
+                        <Input type="email" />
+                      </div>
+                      <div className="flex justify-around gap-2 my-4">
+                        <div className="my-auto">Issue: </div>
+                        <Input type="text" />
+                      </div>
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter className="w-full flex gap-2">
+                    <DialogClose asChild>
+                      <Link href="mailto:support@capybara.xyz" className="w-1/2" >
+                        <Button
+                          className="w-full"
+                          variant={"outline"}
+                          disabled={loading}
+                        >
+                          <Mail size={16} className="my-auto mx-1" />
+                          Email Us
+                        </Button>
+                      </Link>
+                    </DialogClose>
+                    <DialogClose asChild>
+                      <Button className="w-1/2 bg-green-400" disabled={loading}>
+                        Submit Support Form
+                      </Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
