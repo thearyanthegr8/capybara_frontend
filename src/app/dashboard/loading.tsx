@@ -3,7 +3,7 @@ import React from "react";
 
 function loading() {
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-[100vh] flex items-center justify-center">
       <Icons.spinner className="animate-spin" color="black" />
     </div>
   );

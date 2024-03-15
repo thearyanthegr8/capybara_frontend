@@ -22,11 +22,15 @@ export async function middleware(req: NextRequest) {
       .eq("email", session?.user?.email)
       .single();
 
-    const newUser = { ...session?.user, type: user.data.type };
-
-    console.log(newUser);
-
-    session.user = newUser;
+    // const newUser = {
+    //   ...session?.user,
+    //   raw_user_meta_data: {
+    //     ...session?.user.user_metadata,
+    //     type: user.data.type,
+    //     name: user.data.name,
+    //     mobile: user.data.mobile,
+    //   },
+    // };
 
     console.log(session.user);
   }

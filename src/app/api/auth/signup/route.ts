@@ -16,6 +16,13 @@ export async function POST(request: NextRequest) {
     email,
     password,
     phone: mobile.toString(),
+    options: {
+      data: {
+        name,
+        mobile: mobile.toString(),
+        type,
+      },
+    },
   });
 
   if (error) {
