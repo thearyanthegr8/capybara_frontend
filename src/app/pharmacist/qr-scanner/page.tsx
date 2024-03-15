@@ -7,14 +7,14 @@ function Page() {
   const [qrData, setQrData] = useState<string | null>(null);
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (qrData) {
-  //     router.push(`/prescription/${qrData}`);
-  //   }
-  // }, [qrData, router]);
+  useEffect(() => {
+    if (qrData) {
+      router.push(`/prescription/${qrData}`);
+    }
+  }, [qrData, router]);
 
   return (
-    <div className="flex flex-col justify-center items-center w-full">
+    <div className="flex flex-col justify-center items-center w-full h-full">
       <QrReader
         onResult={(result, error) => {
           if (!!result) {
