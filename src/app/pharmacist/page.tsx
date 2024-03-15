@@ -4,6 +4,7 @@ import { Icons } from "@/components/ui/icons";
 import { Database } from "@/lib/types/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { LogOutIcon, QrCode } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -54,13 +55,15 @@ function Page() {
         )}
       </div>
       <div className="flex flex-col gap-4">
-        <Button
-          variant="outline"
-          className="w-full justify-center flex gap-2 h-12"
-        >
-          <QrCode size={16} />
-          Scan QR Code
-        </Button>
+        <Link href="/pharmacist/qr-scanner">
+          <Button
+            variant="outline"
+            className="w-full justify-center flex gap-2 h-12"
+          >
+            <QrCode size={16} />
+            Scan QR Code
+          </Button>
+        </Link>
         <Button
           variant="ghost"
           className="w-full justify-center flex gap-2 h-12"
