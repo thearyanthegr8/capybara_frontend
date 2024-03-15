@@ -51,7 +51,7 @@ function Sidebar() {
   }
 
   return (
-    <nav className="left-0 top-0 bottom-0 w-[20rem] px-4 py-8 shadow-xl h-screen flex flex-col items-center">
+    <nav className="left-0 top-0 bottom-0 w-[20rem] px-4 py-8 shadow-xl h-screen flex flex-col items-center fixed">
       <div className="flex gap-4 items-center justify-center">
         <Image src="/icon.png" alt="Logo" width={70} height={70} />
         <h1 className="text-2xl font-medium tracking-tight uppercase">

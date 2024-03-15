@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import Link from "next/link";
 
 function Page() {
   const [date, setDate] = useState<Date>();
@@ -48,10 +49,12 @@ function Page() {
             </Button>
           </div>
         </div>
-        <Button className="w-full flex gap-2">
-          <Plus size={16} />
-          Create Prescription
-        </Button>
+        <Link href="/dashboard/create-prescription">
+          <Button className="w-full flex gap-2">
+            <Plus size={16} />
+            Create Prescription
+          </Button>
+        </Link>
       </div>
     </section>
   );

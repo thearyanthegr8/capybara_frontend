@@ -44,7 +44,7 @@ const LabelledInput: React.FC<{
     name={name}
     render={({ field }) => (
       <FormItem
-        className={dir === "horizontal" ? "flex gap-8 items-center " : ""}
+        className={dir === "horizontal" ? "flex gap-8 items-center" : ""}
       >
         <FormLabel
           aria-required
