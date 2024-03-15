@@ -8,7 +8,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import axios from "axios";
 import { Database } from "@/lib/types/database.types";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
@@ -57,7 +56,7 @@ function LoginForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 w-[20rem]"
+        className="w-full md:w-[20rem] lg:w-[25rem] flex flex-col gap-4"
       >
         <LabelledInput
           control={form.control}
@@ -65,8 +64,9 @@ function LoginForm() {
           label="Email"
           placeholder={"johndoe@gmail.com"}
           isDisabled={loading}
+          required
         />
-        <div className="relative w-full">
+        <div className="relative w-full mb-4">
           <LabelledInput
             control={form.control}
             placeholder="********"
@@ -75,6 +75,8 @@ function LoginForm() {
             type={hide ? "password" : "text"}
             id="password"
             isDisabled={loading}
+            required
+            tooltip="Password must be at least 8 characters long"
           />
           {hide ? (
             <EyeIcon
@@ -88,7 +90,7 @@ function LoginForm() {
             />
           )}
         </div>
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading} className="w-full">
           Submit
         </Button>
       </form>

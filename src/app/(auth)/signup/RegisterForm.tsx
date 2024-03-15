@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { Label } from "@/components/ui/label";
 
 const registerSchema = z.object({
   name: z.string().min(3),
@@ -66,7 +67,7 @@ function RegisterForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 w-[20rem]"
+        className="w-full md:w-[20rem] lg:w-[25rem] flex flex-col gap-4"
       >
         <LabelledInput
           control={form.control}
@@ -74,6 +75,7 @@ function RegisterForm() {
           label="Name"
           placeholder={"John Doe"}
           isDisabled={loading}
+          required
         />
         <LabelledInput
           control={form.control}
@@ -81,6 +83,7 @@ function RegisterForm() {
           label="Email"
           placeholder={"johndoe@gmail.com"}
           isDisabled={loading}
+          required
         />
         <LabelledInput
           control={form.control}
@@ -89,6 +92,7 @@ function RegisterForm() {
           placeholder={"9876543210"}
           type="number"
           isDisabled={loading}
+          required
         />
         <div className="relative w-full">
           <LabelledInput
@@ -99,6 +103,8 @@ function RegisterForm() {
             type={hide ? "password" : "text"}
             id="password"
             isDisabled={loading}
+            required
+            tooltip="Password must be at least 8 characters long"
           />
           {hide ? (
             <EyeIcon
@@ -112,18 +118,22 @@ function RegisterForm() {
             />
           )}
         </div>
-        <Select
-          onValueChange={(e) => form.setValue("type", e)}
-          disabled={loading}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="DOCTOR">Doctor</SelectItem>
-            <SelectItem value="PHARMACIST">Pharmacist</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex flex-col gap-2">
+          <Label>Type *</Label>
+          <Select
+            onValueChange={(e) => form.setValue("type", e)}
+            disabled={loading}
+            required
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="DOCTOR">Doctor</SelectItem>
+              <SelectItem value="PHARMACIST">Pharmacist</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <Button type="submit" disabled={loading}>
           Register
         </Button>

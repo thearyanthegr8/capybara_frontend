@@ -6,7 +6,6 @@ import type { Database } from "@/lib/types/database.types";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
-  const requestUrl = new URL(request.url);
   const { name, mobile, email, password, type } = await request.json();
 
   const cookieStore = cookies();
@@ -17,9 +16,6 @@ export async function POST(request: NextRequest) {
     email,
     password,
     phone: mobile.toString(),
-    // options: {
-    //   emailRedirectTo: `${requestUrl.origin}/api/auth/callback`,
-    // },
   });
 
   if (error) {
