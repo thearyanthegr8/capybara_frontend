@@ -31,17 +31,17 @@ function page() {
         </AccordionItem>
         <AccordionItem value="item-2">
           <AccordionTrigger>
-            How can I track my patients' prescription history?
+            How can I track my patients&apos; prescription history?
           </AccordionTrigger>
           <AccordionContent>
             Your personalised profile on the platform includes a comprehensive
-            dashboard where you can track and manage your patients' prescription
+            dashboard where you can track and manage your patients&apos; prescription
             history. You can view past prescriptions
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
           <AccordionTrigger>
-            Can I edit or update a prescription after it's been created?
+            Can I edit or update a prescription after it&apos;s been created?
           </AccordionTrigger>
           <AccordionContent>
             Once a prescription has been generated, it cannot be edited or
@@ -56,7 +56,7 @@ function page() {
             What information is required to create a prescription?
           </AccordionTrigger>
           <AccordionContent>
-            When creating a prescription, you'll need to provide basic patient
+            When creating a prescription, you&apos;ll need to provide basic patient
             information such as name, age, and contact details, along with
             details of the prescribed medications, dosage instructions, and any
             additional notes or precautions.
@@ -68,7 +68,7 @@ function page() {
           </AccordionTrigger>
           <AccordionContent>
             To purchase additional tokens or upgrade your subscription plan,
-            navigate to the "Subscription" or "Token Packs" section in your
+            navigate to the &quot;Subscription&quot; or &quot;Token Packs&quot; section in your
             account settings. Follow the prompts to select your desired plan or
             token pack and complete the payment process securely.
           </AccordionContent>
@@ -84,7 +84,7 @@ function page() {
           </AccordionTrigger>
           <AccordionContent>
             To verify a prescription, log in to your account and simply scan the
-            QR code on the prescription using the platform's QR code scanner,
+            QR code on the prescription using the platform&apos;s QR code scanner,
             and the system will retrieve the prescription details from the
             blockchain for validation.
           </AccordionContent>
@@ -96,7 +96,7 @@ function page() {
           </AccordionTrigger>
           <AccordionContent>
             If you encounter an invalid or suspicious prescription during
-            verification, follow your organization's protocol for handling such
+            verification, follow your organization&apos;s protocol for handling such
             cases. You may contact the prescribing doctor or healthcare facility
             for clarification, or report the issue to the appropriate regulatory
             authorities if necessary.
@@ -120,7 +120,7 @@ function page() {
           </AccordionTrigger>
           <AccordionContent>
             Yes, you can access the platform from any internet and
-            camera-enabled device with your login credentials. Whether you're
+            camera-enabled device with your login credentials. Whether you&apos;re
             using a tablet, or smartphone, you can securely log in to your
             account and verify prescriptions from anywhere with an internet
             connection.
