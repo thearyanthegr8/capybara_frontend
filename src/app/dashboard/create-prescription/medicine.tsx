@@ -7,52 +7,79 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { DotIcon, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-interface MedicineData {
-  name: string;
-  qty: number;
-  beforeBreakfast: boolean;
-  afterBreakfast: boolean;
-  beforeLunch: boolean;
-  afterLunch: boolean;
-  beforeDinner: boolean;
-  afterDinner: boolean;
-  totalQty: number;
-}
-
-function Medicine({ index, medicine }: { index: number; medicine: any[] }) {
-  const [data, setData] = useState<MedicineData>({
-    name: "",
-    qty: 0,
-    beforeBreakfast: false,
-    afterBreakfast: false,
-    beforeLunch: false,
-    afterLunch: false,
-    beforeDinner: false,
-    afterDinner: false,
-    totalQty: 0,
-  });
+function Medicine({
+  index,
+  medicine,
+  setMedicines,
+  loading,
+}: {
+  index: number;
+  medicine: any[];
+  setMedicines: React.Dispatch<React.SetStateAction<any[]>>;
+  loading: boolean;
+}) {
+  const [name, setName] = useState("");
+  const [qty, setQty] = useState(0);
+  const [beforeBreakfast, setBeforeBreakfast] = useState(false);
+  const [afterBreakfast, setAfterBreakfast] = useState(false);
+  const [beforeLunch, setBeforeLunch] = useState(false);
+  const [afterLunch, setAfterLunch] = useState(false);
+  const [beforeDinner, setBeforeDinner] = useState(false);
+  const [afterDinner, setAfterDinner] = useState(false);
+  const [totalQty, setTotalQty] = useState(0);
 
   useEffect(() => {
-    console.log(data);
-    // setData((prev) => ({
-    //   ...prev,
-    //   totalQty:
-    //     data.qty *
-    //     ((data.beforeBreakfast ? 1 : 0) +
-    //       (data.afterBreakfast ? 1 : 0) +
-    //       (data.beforeLunch ? 1 : 0) +
-    //       (data.afterLunch ? 1 : 0) +
-    //       (data.beforeDinner ? 1 : 0) +
-    //       (data.afterDinner ? 1 : 0)),
-    // }));
+    if (qty === null || qty < 0) {
+      setTotalQty(0);
+    } else {
+      setTotalQty(
+        qty *
+          ((beforeBreakfast ? 1 : 0) +
+            (afterBreakfast ? 1 : 0) +
+            (beforeLunch ? 1 : 0) +
+            (afterLunch ? 1 : 0) +
+            (beforeDinner ? 1 : 0) +
+            (afterDinner ? 1 : 0))
+      );
+    }
   }, [
-    data.qty,
-    data.beforeBreakfast,
-    data.afterBreakfast,
-    data.beforeLunch,
-    data.afterLunch,
-    data.beforeDinner,
-    data.afterDinner,
+    qty,
+    beforeBreakfast,
+    afterBreakfast,
+    beforeLunch,
+    afterLunch,
+    beforeDinner,
+    afterDinner,
+  ]);
+
+  useEffect(() => {
+    setMedicines((medicines) => {
+      const newMedicines = [...medicines];
+      newMedicines[index] = {
+        name,
+        qty,
+        beforeBreakfast,
+        afterBreakfast,
+        beforeLunch,
+        afterLunch,
+        beforeDinner,
+        afterDinner,
+        totalQty,
+      };
+      return newMedicines;
+    });
+  }, [
+    name,
+    qty,
+    beforeBreakfast,
+    afterBreakfast,
+    beforeLunch,
+    afterLunch,
+    beforeDinner,
+    afterDinner,
+    setMedicines,
+    index,
+    totalQty,
   ]);
 
   return (
@@ -60,46 +87,36 @@ function Medicine({ index, medicine }: { index: number; medicine: any[] }) {
       <TableCell>
         <Input
           placeholder="Medicine Name"
-          value={data.name}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, name: e.target.value }))
-          }
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          disabled={loading}
         />
       </TableCell>
       <TableCell className="w-[20rem]">
         <Input
           placeholder="Qty/day"
           type="number"
-          value={data.qty}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, qty: parseInt(e.target.value) }))
-          }
+          value={qty}
+          onChange={(e) => setQty(e.target.valueAsNumber)}
+          disabled={loading}
         />
       </TableCell>
       <TableCell className="w-[10rem]">
         <div className="flex gap-2 h-full w-full justify-start items-center">
           <Checkbox
             id="beforeBreakfast"
-            value={data.beforeBreakfast}
-            onChange={(e: any) =>
-              setData((prev) => ({
-                ...prev,
-                beforeBreakfast: e.target.checked,
-              }))
-            }
+            checked={beforeBreakfast}
+            onCheckedChange={(checked: any) => setBeforeBreakfast(checked)}
+            disabled={loading}
           />
           <Label htmlFor="beforeBreakfast" className="cursor-pointer">
             Before
           </Label>
           <Checkbox
             id="afterBreakfast"
-            value={data.afterBreakfast}
-            onChange={(e: any) =>
-              setData((prev) => ({
-                ...prev,
-                afterBreakfast: e.target.checked,
-              }))
-            }
+            checked={afterBreakfast}
+            onCheckedChange={(checked: any) => setAfterBreakfast(checked)}
+            disabled={loading}
           />
           <Label htmlFor="afterBreakfast" className="cursor-pointer">
             After
@@ -110,26 +127,18 @@ function Medicine({ index, medicine }: { index: number; medicine: any[] }) {
         <div className="flex gap-2 h-full w-full justify-start items-center">
           <Checkbox
             id="beforeLunch"
-            value={data.beforeLunch}
-            onChange={(e: any) =>
-              setData((prev) => ({
-                ...prev,
-                beforeLunch: e.target.checked,
-              }))
-            }
+            value={beforeLunch}
+            onCheckedChange={(checked: any) => setBeforeLunch(checked)}
+            disabled={loading}
           />
           <Label htmlFor="beforeLunch" className="cursor-pointer">
             Before
           </Label>
           <Checkbox
             id="afterLunch"
-            value={data.afterLunch}
-            onChange={(e: any) =>
-              setData((prev) => ({
-                ...prev,
-                afterLunch: e.target.checked,
-              }))
-            }
+            value={afterLunch}
+            onCheckedChange={(checked: any) => setAfterLunch(checked)}
+            disabled={loading}
           />
           <Label htmlFor="afterLunch" className="cursor-pointer">
             After
@@ -140,26 +149,27 @@ function Medicine({ index, medicine }: { index: number; medicine: any[] }) {
         <div className="flex gap-2 h-full w-full justify-start items-center">
           <Checkbox
             id="beforeDinner"
-            value={data.beforeDinner}
-            onChange={(e: any) =>
-              setData((prev) => ({
-                ...prev,
-                beforeDinner: e.target.checked,
-              }))
-            }
+            value={beforeDinner}
+            onCheckedChange={(checked: any) => setBeforeDinner(checked)}
+            disabled={loading}
           />
           <Label htmlFor="beforeDinner" className="cursor-pointer">
             Before
           </Label>
-          <Checkbox id="afterDinner" />
+          <Checkbox
+            id="afterDinner"
+            value={afterDinner}
+            onCheckedChange={(checked: any) => setAfterDinner(checked)}
+            disabled={loading}
+          />
           <Label htmlFor="afterDinner" className="cursor-pointer">
             After
           </Label>
         </div>
       </TableCell>
-      <TableCell>{data.totalQty}</TableCell>
+      <TableCell>{totalQty}</TableCell>
       <TableCell>
-        <Button variant={"ghost"} type="button">
+        <Button variant={"ghost"} type="button" disabled={loading}>
           More
         </Button>
       </TableCell>

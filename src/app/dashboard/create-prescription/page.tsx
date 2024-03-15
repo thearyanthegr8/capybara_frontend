@@ -1,11 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
@@ -22,20 +21,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
   TableCaption,
-  TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Medicine from "./medicine";
+import axios from "axios";
+import { useToast } from "@/components/ui/use-toast";
 
 const prescriptionSchema = z.object({
   patientName: z.string(),
@@ -62,16 +59,38 @@ function Page() {
     },
   });
 
-  const [medicineNo, setMedicineNo] = React.useState(1);
+  const [medicineNo, setMedicineNo] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  const medicines: any[] = [];
+  const [medicines, setMedicines] = useState<any[]>([]);
+  const { toast } = useToast();
 
   useEffect(() => {
     console.log(medicines);
   }, [medicines]);
 
   async function onSubmit(values: z.infer<typeof prescriptionSchema>) {
-    console.log(values);
+    setLoading(true);
+    try {
+      const prescription = await axios.post("/api/prescription/create", {
+        values,
+        medicines,
+      });
+
+      toast({
+        title: "Prescription Created",
+        description: "Prescription has been created",
+        duration: 10000,
+      });
+
+      form.reset();
+      setMedicines([]);
+      setMedicineNo(0);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -98,6 +117,7 @@ function Page() {
               label="Patient Name"
               placeholder="John Doe"
               required
+              isDisabled={loading}
             />
             <LabelledInput
               control={form.control}
@@ -106,12 +126,13 @@ function Page() {
               placeholder="51"
               type="number"
               required
+              isDisabled={loading}
             />
             <div className="flex flex-col gap-2">
               <Label>Gender *</Label>
               <Select
                 onValueChange={(e) => form.setValue("patientGender", e)}
-                // disabled={loading}
+                disabled={loading}
                 required
               >
                 <SelectTrigger className="w-full">
@@ -130,6 +151,7 @@ function Page() {
               label="Patient Weight (Kgs)"
               placeholder="51"
               type="number"
+              isDisabled={loading}
             />
             <LabelledInput
               control={form.control}
@@ -137,6 +159,7 @@ function Page() {
               label="Patient Height (Cms)"
               placeholder="51"
               type="number"
+              isDisabled={loading}
             />
             <LabelledInput
               control={form.control}
@@ -144,6 +167,7 @@ function Page() {
               label="Patient Temperature (Celcius)"
               placeholder="51"
               type="number"
+              isDisabled={loading}
             />
             <div>
               <h3>Medicines</h3>
@@ -157,6 +181,7 @@ function Page() {
                       onClick={() => {
                         setMedicineNo((prev) => prev + 1);
                       }}
+                      disabled={loading}
                     >
                       Add Medicine
                     </Button>
@@ -175,7 +200,13 @@ function Page() {
                 </TableHeader>
                 <TableBody>
                   {Array.from({ length: medicineNo }).map((_, i) => (
-                    <Medicine key={i} index={i} medicine={medicines} />
+                    <Medicine
+                      key={i}
+                      index={i}
+                      medicine={medicines}
+                      setMedicines={setMedicines}
+                      loading={loading}
+                    />
                   ))}
                 </TableBody>
               </Table>
@@ -185,7 +216,11 @@ function Page() {
               name="notes"
               label="Notes"
               placeholder="Notes"
+              isDisabled={loading}
             />
+            <Button type="submit" disabled={loading}>
+              Create Prescription
+            </Button>
           </form>
         </Form>
       </div>
