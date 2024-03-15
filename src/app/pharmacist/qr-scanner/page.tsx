@@ -21,6 +21,7 @@ function Page() {
         className={"w-[300px] h-[300px]"}
         constraints={{ facingMode: "environment" }}
       />
+      {qrData && <p className="text-2xl mt-4">{qrData}</p>}
     </div>
   );
 }
