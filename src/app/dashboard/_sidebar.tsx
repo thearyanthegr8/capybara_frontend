@@ -1,12 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Home,
-  LayoutDashboard,
-  LogOutIcon,
-  MailQuestion,
-  Users,
-} from "lucide-react";
+import { Home, LogOutIcon, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -23,7 +17,6 @@ import {
 import { DialogClose } from "@radix-ui/react-dialog";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/types/database.types";
-import { set } from "react-hook-form";
 import { Icons } from "@/components/ui/icons";
 
 function Sidebar() {
@@ -56,8 +49,6 @@ function Sidebar() {
       setLoading(false);
     }
   }
-
-  console.log(user);
 
   return (
     <nav className="left-0 top-0 bottom-0 w-[20rem] px-4 py-8 shadow-xl h-screen flex flex-col items-center">

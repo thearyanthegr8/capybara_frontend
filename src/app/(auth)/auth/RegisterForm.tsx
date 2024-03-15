@@ -7,9 +7,7 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
-import { Database } from "@/lib/types/database.types";
 import {
   Select,
   SelectContent,
@@ -35,7 +33,6 @@ function RegisterForm() {
     defaultValues: {
       name: "",
       email: "",
-      // mobile: "",
       password: "",
       type: "",
     },
@@ -52,7 +49,6 @@ function RegisterForm() {
       const register = await axios.post("/api/auth/signup", values);
       router.push("/");
     } catch (e: any) {
-      console.log(e);
       toast({
         title: "Unable to register",
         description: e.response.data.error.message,

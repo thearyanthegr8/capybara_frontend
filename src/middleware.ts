@@ -15,26 +15,6 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (session) {
-    const user = await supabase
-      .from("User")
-      .select("*")
-      .eq("email", session?.user?.email)
-      .single();
-
-    // const newUser = {
-    //   ...session?.user,
-    //   raw_user_meta_data: {
-    //     ...session?.user.user_metadata,
-    //     type: user.data.type,
-    //     name: user.data.name,
-    //     mobile: user.data.mobile,
-    //   },
-    // };
-
-    console.log(session.user);
-  }
-
   if (req.nextUrl.pathname === "/dashboard" && !session) {
     // Redirect to the absolute login URL
     return NextResponse.redirect(new URL("/auth", req.url));
