@@ -13,7 +13,7 @@ function page() {
     <div>
       <div>
         <h1 className="text-2xl font-semibold tracking-tight mb-2">FAQ</h1>
-        <h2 className="text-xl font-semibold tracking-tight">Doctors</h2>
+        <h2 className="text-xl font-semibold tracking-tight mb-2">Doctors</h2>
       </div>
       <Separator />
       <Accordion type="single" collapsible>
@@ -74,8 +74,8 @@ function page() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+      <h2 className="text-xl font-semibold tracking-tight mt-4 mb-2">Pharmacists</h2>
       <Separator className="mb-2"/>
-      <h2 className="text-xl font-semibold tracking-tight">Pharmacists</h2>
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
           <AccordionTrigger>

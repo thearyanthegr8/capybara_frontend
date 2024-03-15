@@ -144,7 +144,7 @@ function Sidebar() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start flex gap-2 ${
-                    pathname === "/dashboard/spport" ? "border-2" : ""
+                    pathname === "/dashboard/support" ? "border-2" : ""
                   }`}
                 >
                   <Headset size={16}/>
