@@ -29,6 +29,7 @@ function Page() {
         className={"w-full h-full"}
         constraints={{ facingMode: "environment" }}
       />
+      {qrData && <p>Scanned: {qrData}</p>}
     </div>
   );
 }
