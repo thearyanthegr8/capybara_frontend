@@ -25,6 +25,9 @@ export async function middleware(req: NextRequest) {
     (req.nextUrl.pathname === "/auth" || req.nextUrl.pathname === "/") &&
     session
   ) {
+    if (session.user.user_metadata.type === "PHARMACIST") {
+      return NextResponse.redirect(new URL("/pharmacist", req.url));
+    }
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
@@ -33,5 +36,5 @@ export async function middleware(req: NextRequest) {
 
 // Ensure the middleware is only called for relevant paths.
 export const config = {
-  matcher: ["/", "/auth", "/dashboard"],
+  matcher: ["/", "/auth", "/dashboard", "/pharmacist"],
 };

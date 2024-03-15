@@ -46,7 +46,11 @@ function LoginForm() {
       });
       setLoading(false);
     } else {
-      router.push("/dashboard");
+      if (data?.user?.user_metadata?.type === "PHARMACIST") {
+        router.push("/pharmacist");
+      } else {
+        router.push("/dashboard");
+      }
     }
   }
 
