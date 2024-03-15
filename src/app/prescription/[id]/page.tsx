@@ -107,7 +107,7 @@ function Page() {
           </div>
         </div>
 
-        <Table >
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="text-left ">Medicine Name</TableHead>
@@ -122,22 +122,21 @@ function Page() {
             </TableRow>
           </TableHeader>
           <TableBody>
-              {(prescription["medicines"] as any[]).map(
-                (x: any, index: number) => (
-                  <TableRow>
-                    <TableCell >{x["name"]}</TableCell>
-                    <TableCell >{x["qty"]}</TableCell>
-                    <TableCell >{x["beforeBreakfast"]?"YES":"NO"}</TableCell>
-                    <TableCell >{x["afterBreakfast"]?"YES":"NO"}</TableCell>
-                    <TableCell >{x["beforeLunch"]?"YES":"NO"}</TableCell>
-                    <TableCell >{x["afterLunch"]?"YES":"NO"}</TableCell>
-                    <TableCell >{x["beforeDinner"]?"YES":"NO"}</TableCell>
-                    <TableCell >{x["afterDinner"]?"YES":"NO"}</TableCell>
-                    <TableCell >{x["totalQty"]}</TableCell>
-                  
-            </TableRow>
-                )
-              )}
+            {(prescription["medicines"] as any[]).map(
+              (x: any, index: number) => (
+                <TableRow key={index}>
+                  <TableCell>{x["name"]}</TableCell>
+                  <TableCell>{x["qty"]}</TableCell>
+                  <TableCell>{x["beforeBreakfast"] ? "YES" : "NO"}</TableCell>
+                  <TableCell>{x["afterBreakfast"] ? "YES" : "NO"}</TableCell>
+                  <TableCell>{x["beforeLunch"] ? "YES" : "NO"}</TableCell>
+                  <TableCell>{x["afterLunch"] ? "YES" : "NO"}</TableCell>
+                  <TableCell>{x["beforeDinner"] ? "YES" : "NO"}</TableCell>
+                  <TableCell>{x["afterDinner"] ? "YES" : "NO"}</TableCell>
+                  <TableCell>{x["totalQty"]}</TableCell>
+                </TableRow>
+              )
+            )}
           </TableBody>
         </Table>
       </div>
