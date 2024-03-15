@@ -78,11 +78,17 @@ function Page() {
     );
   } else if (responseCode === 200 && prescription) {
     return (
-      <div className="mx-4 mt-4">
+      <div className="mx-4 mt-4 mb-2">
         <div className="flex justify-between">
-          <h1 className="text-4xl font-semibold tracking-tight mb-2">
-            Name: {prescription["patientName"]}
-          </h1>
+          <div className="">
+            <h1 className="text-4xl font-semibold tracking-tight mb-2">
+              Name: {prescription["patientName"]}
+            </h1>
+            <img
+            className="mx-auto"
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${p_id}`}
+            />
+          </div>
           <div className="mr-4">
             <h1 className="text-2xl font-semibold tracking-tight mb-2">
               Age: {prescription["patientAge"]}
