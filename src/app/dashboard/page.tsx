@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import PrescriptionTable from "./_prescription-table";
 
 function Page() {
   const [date, setDate] = useState<Date>();
@@ -27,6 +28,7 @@ function Page() {
           </h3>
         </div>
         <Separator />
+        <PrescriptionTable date={date || new Date()} />
       </div>
       <Separator orientation="vertical" />
       <div className="flex flex-col justify-between">
@@ -38,7 +40,6 @@ function Page() {
             disabled={(date) =>
               date > new Date() || date < new Date("1900-01-01")
             }
-            // initialFocus
             className="rounded-md border"
           />
           <div className="h-full flex gap-2 flex-col">

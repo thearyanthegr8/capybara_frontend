@@ -191,7 +191,7 @@ function Page() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Name</TableHead>
-                    <TableHead className="w-[20rem]">Qty/Day</TableHead>
+                    <TableHead className="w-[20rem]">Qty/Dosage</TableHead>
                     <TableHead className="w-[10rem]">Breakfast</TableHead>
                     <TableHead className="w-[10rem]">Lunch</TableHead>
                     <TableHead className="w-[10rem]">Dinner</TableHead>
