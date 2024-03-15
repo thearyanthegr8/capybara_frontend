@@ -47,7 +47,7 @@ function RegisterForm() {
     setLoading(true);
     try {
       const register = await axios.post("/api/auth/signup", values);
-      router.push("/");
+      router.push("/dashboard");
     } catch (e: any) {
       toast({
         title: "Unable to register",

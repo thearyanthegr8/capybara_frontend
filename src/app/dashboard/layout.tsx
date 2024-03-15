@@ -7,9 +7,9 @@ import { InferGetServerSidePropsType } from "next";
 
 function layout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="flex">
+    <main className="flex h-screen w-screen overflow-hidden">
       <Sidebar />
-      {children}
+      <section className="p-8 w-full">{children}</section>
     </main>
   );
 }
