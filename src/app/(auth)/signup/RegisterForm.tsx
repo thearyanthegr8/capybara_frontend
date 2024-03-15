@@ -10,48 +10,57 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
 import { Database } from "@/lib/types/database.types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 
-const loginSchema = z.object({
+const registerSchema = z.object({
+  name: z.string().min(3),
   email: z.string().email(),
+  mobile: z.number().min(10),
   password: z.string().min(8),
+  type: z.string(),
 });
 
-function LoginForm() {
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+function RegisterForm() {
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: "",
       email: "",
+      // mobile: "",
       password: "",
+      type: "",
     },
   });
 
-  const supabase = createClientComponentClient<Database>();
+  const [hide, setHide] = useState(true);
   const { toast } = useToast();
-  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
-  async function onSubmit(values: z.infer<typeof loginSchema>) {
+  async function onSubmit(values: z.infer<typeof registerSchema>) {
     setLoading(true);
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: values.email,
-      password: values.password,
-    });
-
-    if (error) {
+    try {
+      const register = await axios.post("/api/auth/signup", values);
+      router.push("/");
+    } catch (e: any) {
+      console.log(e);
       toast({
-        title: "Unable to login",
-        description: error.message,
+        title: "Unable to register",
+        description: e.response.data.error.message,
         variant: "destructive",
       });
+    } finally {
       setLoading(false);
-    } else {
-      router.push("/");
     }
   }
-
-  const [hide, setHide] = useState(true);
 
   return (
     <Form {...form}>
@@ -61,9 +70,24 @@ function LoginForm() {
       >
         <LabelledInput
           control={form.control}
+          name="name"
+          label="Name"
+          placeholder={"John Doe"}
+          isDisabled={loading}
+        />
+        <LabelledInput
+          control={form.control}
           name="email"
           label="Email"
           placeholder={"johndoe@gmail.com"}
+          isDisabled={loading}
+        />
+        <LabelledInput
+          control={form.control}
+          name="mobile"
+          label="Mobile"
+          placeholder={"9876543210"}
+          type="number"
           isDisabled={loading}
         />
         <div className="relative w-full">
@@ -88,12 +112,24 @@ function LoginForm() {
             />
           )}
         </div>
+        <Select
+          onValueChange={(e) => form.setValue("type", e)}
+          disabled={loading}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="DOCTOR">Doctor</SelectItem>
+            <SelectItem value="PHARMACIST">Pharmacist</SelectItem>
+          </SelectContent>
+        </Select>
         <Button type="submit" disabled={loading}>
-          Submit
+          Register
         </Button>
       </form>
     </Form>
   );
 }
 
-export default LoginForm;
+export default RegisterForm;

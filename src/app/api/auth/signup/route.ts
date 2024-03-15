@@ -3,25 +3,38 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 import type { Database } from "@/lib/types/database.types";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
   const requestUrl = new URL(request.url);
-  const { email, password } = await request.json();
+  const { name, mobile, email, password, type } = await request.json();
 
   const cookieStore = cookies();
   const supabase = createRouteHandlerClient<Database>({
     cookies: () => cookieStore,
   });
-
-  await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      emailRedirectTo: `${requestUrl.origin}/api/auth/callback`,
+    phone: mobile.toString(),
+    // options: {
+    //   emailRedirectTo: `${requestUrl.origin}/api/auth/callback`,
+    // },
+  });
+
+  if (error) {
+    return NextResponse.json({ error: error }, { status: 500 });
+  }
+
+  const user = await prisma.user.create({
+    data: {
+      id: data.user?.id,
+      name,
+      mobile: mobile.toString(),
+      email,
+      type,
     },
   });
 
-  return NextResponse.redirect(requestUrl.origin, {
-    status: 301,
-  });
+  return NextResponse.json({ user }, { status: 201 });
 }

@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 import type { NextRequest } from "next/server";
 import type { Database } from "@/lib/types/database.types";
-import { useRouter } from "next/router";
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
@@ -16,10 +15,29 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
+  if (session) {
+    const user = await supabase
+      .from("User")
+      .select("*")
+      .eq("email", session?.user?.email)
+      .single();
+
+    const newUser = { ...session?.user, type: user.data.type };
+
+    console.log(newUser);
+
+    session.user = newUser;
+
+    console.log(session.user);
+  }
+
   if (req.nextUrl.pathname === "/" && !session) {
     // Redirect to the absolute login URL
     return NextResponse.redirect(new URL("/login", req.url));
-  } else if (req.nextUrl.pathname === "/login" && session) {
+  } else if (
+    (req.nextUrl.pathname === "/login" || req.nextUrl.pathname === "/signup") &&
+    session
+  ) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
@@ -28,5 +46,5 @@ export async function middleware(req: NextRequest) {
 
 // Ensure the middleware is only called for relevant paths.
 export const config = {
-  matcher: ["/", "/login"],
+  matcher: ["/", "/login", "/signup"],
 };
