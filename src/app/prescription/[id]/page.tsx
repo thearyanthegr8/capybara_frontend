@@ -215,12 +215,7 @@ function Page() {
         )}
         {userSession && userType === "PHARMACIST" && (
           <div>
-            <Button
-              className="w-full"
-              onClick={() => {
-                updatePrescription();
-              }}
-            >
+            <Button className="w-full" onClick={() => updatePrescription()}>
               Save
             </Button>
           </div>
