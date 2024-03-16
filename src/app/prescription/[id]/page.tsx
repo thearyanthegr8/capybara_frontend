@@ -83,30 +83,30 @@ function Page() {
 
   const { toast } = useToast();
 
-  async function updatePrescription() {
-    setLoading(true);
-    try {
-      const response = await axios.post(`/api/prescription/update`, {
-        p_id,
-        medicines,
-      });
+  // async function updatePrescription() {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.post(`/api/prescription/update`, {
+  //       p_id,
+  //       medicines,
+  //     });
 
-      toast({
-        title: "Prescription updated",
-        description: "Prescription updated successfully",
-      });
-      console.log(response);
-    } catch (error) {
-      toast({
-        title: "Error updating prescription",
-        description: "Error updating prescription",
-        variant: "destructive",
-      });
-      console.error("Error updating prescription:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  //     toast({
+  //       title: "Prescription updated",
+  //       description: "Prescription updated successfully",
+  //     });
+  //     console.log(response);
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error updating prescription",
+  //       description: "Error updating prescription",
+  //       variant: "destructive",
+  //     });
+  //     console.error("Error updating prescription:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 
   if (loading) {
     return (
