@@ -29,15 +29,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error }, { status: 500 });
   }
 
-  const user = await prisma.user.create({
-    data: {
-      id: data.user?.id,
-      name,
-      mobile: mobile.toString(),
-      email,
-      type,
-    },
-  });
-
-  return NextResponse.json({ user }, { status: 201 });
+  return NextResponse.json({ message: "User registered" }, { status: 201 });
 }
