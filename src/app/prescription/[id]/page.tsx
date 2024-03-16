@@ -86,7 +86,7 @@ function Page() {
   async function updatePrescription() {
     setLoading(true);
     try {
-      const response = await axios.put(`/api/prescription/update`, {
+      const response = await axios.post(`/api/prescription/update`, {
         p_id,
         medicines,
       });

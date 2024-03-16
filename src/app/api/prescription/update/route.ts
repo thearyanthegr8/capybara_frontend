@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function UPDATE(request: NextRequest) {
+export async function POST(request: NextRequest) {
   const { p_id, medicines } = await request.json();
 
   try {
