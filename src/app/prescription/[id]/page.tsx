@@ -213,13 +213,13 @@ function Page() {
             </TableBody>
           </Table>
         )}
-        {userSession && userType === "PHARMACIST" && (
+        {/* {userSession && userType === "PHARMACIST" && (
           <div>
             <Button className="w-full" onClick={() => updatePrescription()}>
               Save
             </Button>
           </div>
-        )}
+        )} */}
       </div>
     );
   } else if (responseCode === 404) {
