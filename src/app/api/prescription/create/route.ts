@@ -44,6 +44,14 @@ export async function POST(req: NextRequest) {
         },
       });
 
+      const req = await fetch(
+        `http://localhost:5000/deploy-contract?data=${JSON.stringify(
+          newMedicines
+        )}&pid=${prescription.p_id}`
+      );
+      const data = await req.text();
+      console.log(data);
+
       console.log(prescription);
 
       return NextResponse.json(
