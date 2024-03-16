@@ -224,10 +224,15 @@ function Page() {
           </Table>
         )}
         {userSession && userType === "PHARMACIST" && (
-          <div>
+          <div className="flex flex-col gap-4">
             <Button className="w-full" onClick={() => updatePrescription()}>
               Save
             </Button>
+            {medicines.every((medicine) => medicine.totalQty === 0) && (
+              <Button className="w-full" variant={"destructive"}>
+                Invalidate
+              </Button>
+            )}
           </div>
         )}
       </div>
