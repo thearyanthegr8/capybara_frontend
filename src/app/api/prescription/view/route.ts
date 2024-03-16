@@ -30,6 +30,14 @@ export async function GET(req: NextRequest) {
         },
       });
 
+      if (prescriptionExists === null) {
+        console.log("Prescription not found");
+        return NextResponse.json(
+          { message: "Prescription not found" },
+          { status: 404 }
+        );
+      }
+
       if (session) {
         const prescription = await prisma.prescription.findFirst({
           where: {

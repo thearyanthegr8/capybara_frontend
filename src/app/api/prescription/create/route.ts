@@ -45,11 +45,22 @@ export async function POST(req: NextRequest) {
         },
       });
 
+      const newData = {
+        patientName: values.patientName,
+        patientAge: values.patientAge,
+        patientGender: values.patientGender,
+        patientWeight: values.patientWeight,
+        patientHeight: values.patientHeight,
+        patientTemperature: values.patientTemperature,
+        notes: values.notes,
+        medicines: newMedicines,
+      };
+
       console.log(prescription);
 
       const req = await fetch(
         `http://localhost:5000/deploy-contract?data=${JSON.stringify(
-          newMedicines
+          newData
         )}&pid=${prescription.p_id}`
       );
       const data = await req.text();

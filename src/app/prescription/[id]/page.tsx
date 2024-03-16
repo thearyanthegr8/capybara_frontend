@@ -23,6 +23,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Image from "next/image";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 
 function Page() {
   const p_id = usePathname().split("/")[2];
@@ -33,6 +35,7 @@ function Page() {
   const [code, setCode] = useState("");
   const [responseCode, setResponseCode] = useState<number>();
   const supabase = createClientComponentClient<Database>();
+  const [medicines, setMedicines] = useState<any[]>([]);
 
   const fetchData = async (customer_code?: string) => {
     setLoading(true);
@@ -62,6 +65,7 @@ function Page() {
       }
     } catch (error) {
       console.error("Error fetching prescription:", error);
+      setResponseCode(404);
     } finally {
       setLoading(false);
     }
@@ -72,6 +76,37 @@ function Page() {
     console.log(responseCode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [p_id, supabase.auth]);
+
+  useEffect(() => {
+    if (prescription) setMedicines(prescription["medicines"]);
+  }, [prescription]);
+
+  const { toast } = useToast();
+
+  async function updatePrescription() {
+    setLoading(true);
+    try {
+      const response = await axios.put(`/api/prescription/update`, {
+        p_id,
+        medicines,
+      });
+
+      toast({
+        title: "Prescription updated",
+        description: "Prescription updated successfully",
+      });
+      console.log(response);
+    } catch (error) {
+      toast({
+        title: "Error updating prescription",
+        description: "Error updating prescription",
+        variant: "destructive",
+      });
+      console.error("Error updating prescription:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   if (loading) {
     return (
@@ -131,7 +166,15 @@ function Page() {
                 (x: any, index: number) => (
                   <TableRow key={index}>
                     <TableCell>{x["name"]}</TableCell>
-                    <TableCell>{x["totalQty"]}</TableCell>
+                    <TableCell>
+                      {x["totalQty"]}
+                      <Input
+                        value={x["totalQty"]}
+                        onChange={(e) => {
+                          medicines[index]["totalQty"] = e.target.value;
+                        }}
+                      />
+                    </TableCell>
                   </TableRow>
                 )
               )}
@@ -171,6 +214,16 @@ function Page() {
             </TableBody>
           </Table>
         )}
+        <div>
+          <Button
+            className="w-full"
+            onClick={() => {
+              updatePrescription();
+            }}
+          >
+            Save
+          </Button>
+        </div>
       </div>
     );
   } else if (responseCode === 404) {
