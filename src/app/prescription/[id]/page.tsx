@@ -167,9 +167,8 @@ function Page() {
                   <TableRow key={index}>
                     <TableCell>{x["name"]}</TableCell>
                     <TableCell>
-                      {x["totalQty"]}
                       <Input
-                        value={x["totalQty"]}
+                        value={medicines[index]["totalQty"]}
                         onChange={(e) => {
                           medicines[index]["totalQty"] = e.target.value;
                         }}
@@ -214,16 +213,18 @@ function Page() {
             </TableBody>
           </Table>
         )}
-        <div>
-          <Button
-            className="w-full"
-            onClick={() => {
-              updatePrescription();
-            }}
-          >
-            Save
-          </Button>
-        </div>
+        {userSession && userType === "PHARMACIST" && (
+          <div>
+            <Button
+              className="w-full"
+              onClick={() => {
+                updatePrescription();
+              }}
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </div>
     );
   } else if (responseCode === 404) {
