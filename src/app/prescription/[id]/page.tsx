@@ -29,6 +29,7 @@ function Page() {
   const [loading, setLoading] = useState<any>(true);
   const [prescription, setPrescription] = useState(null);
   const [userSession, setUserSession] = useState(false);
+  const [userType, setUserType] = useState();
   const [code, setCode] = useState("");
   const [responseCode, setResponseCode] = useState<number>();
   const supabase = createClientComponentClient<Database>();
@@ -44,6 +45,7 @@ function Page() {
       console.log(session);
 
       if (session) {
+        setUserType(session.user.user_metadata.type);
         setUserSession(true);
         const response = await axios.get(`/api/prescription/view?p_id=${p_id}`);
         setResponseCode(response.status);
@@ -116,39 +118,59 @@ function Page() {
             </h1> */}
           </div>
         </div>
-
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-left ">Medicine Name</TableHead>
-              <TableHead className="text-left ">Quantity/Dosage</TableHead>
-              <TableHead className="text-left ">Before Breakfast</TableHead>
-              <TableHead className="text-left ">After Breakfast</TableHead>
-              <TableHead className="text-left ">Before Lunch</TableHead>
-              <TableHead className="text-left ">After lunch</TableHead>
-              <TableHead className="text-left ">Before Dinner</TableHead>
-              <TableHead className="text-left ">After Dinner</TableHead>
-              <TableHead className="text-left ">Total Quantity</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {(prescription["medicines"] as any[]).map(
-              (x: any, index: number) => (
-                <TableRow key={index}>
-                  <TableCell>{x["name"]}</TableCell>
-                  <TableCell>{x["qty"]}</TableCell>
-                  <TableCell>{x["beforeBreakfast"] ? "YES" : "NO"}</TableCell>
-                  <TableCell>{x["afterBreakfast"] ? "YES" : "NO"}</TableCell>
-                  <TableCell>{x["beforeLunch"] ? "YES" : "NO"}</TableCell>
-                  <TableCell>{x["afterLunch"] ? "YES" : "NO"}</TableCell>
-                  <TableCell>{x["beforeDinner"] ? "YES" : "NO"}</TableCell>
-                  <TableCell>{x["afterDinner"] ? "YES" : "NO"}</TableCell>
-                  <TableCell>{x["totalQty"]}</TableCell>
-                </TableRow>
-              )
-            )}
-          </TableBody>
-        </Table>
+        {userSession && userType === "PHARMACIST" ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="text-left ">Medicine Name</TableHead>
+                <TableHead className="text-left ">Total Quantity</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {(prescription["medicines"] as any[]).map(
+                (x: any, index: number) => (
+                  <TableRow key={index}>
+                    <TableCell>{x["name"]}</TableCell>
+                    <TableCell>{x["totalQty"]}</TableCell>
+                  </TableRow>
+                )
+              )}
+            </TableBody>
+          </Table>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="text-left ">Medicine Name</TableHead>
+                <TableHead className="text-left ">Quantity/Dosage</TableHead>
+                <TableHead className="text-left ">Before Breakfast</TableHead>
+                <TableHead className="text-left ">After Breakfast</TableHead>
+                <TableHead className="text-left ">Before Lunch</TableHead>
+                <TableHead className="text-left ">After lunch</TableHead>
+                <TableHead className="text-left ">Before Dinner</TableHead>
+                <TableHead className="text-left ">After Dinner</TableHead>
+                <TableHead className="text-left ">Total Quantity</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {(prescription["medicines"] as any[]).map(
+                (x: any, index: number) => (
+                  <TableRow key={index}>
+                    <TableCell>{x["name"]}</TableCell>
+                    <TableCell>{x["qty"]}</TableCell>
+                    <TableCell>{x["beforeBreakfast"] ? "YES" : "NO"}</TableCell>
+                    <TableCell>{x["afterBreakfast"] ? "YES" : "NO"}</TableCell>
+                    <TableCell>{x["beforeLunch"] ? "YES" : "NO"}</TableCell>
+                    <TableCell>{x["afterLunch"] ? "YES" : "NO"}</TableCell>
+                    <TableCell>{x["beforeDinner"] ? "YES" : "NO"}</TableCell>
+                    <TableCell>{x["afterDinner"] ? "YES" : "NO"}</TableCell>
+                    <TableCell>{x["totalQty"]}</TableCell>
+                  </TableRow>
+                )
+              )}
+            </TableBody>
+          </Table>
+        )}
       </div>
     );
   } else if (responseCode === 404) {

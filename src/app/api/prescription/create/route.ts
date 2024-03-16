@@ -30,9 +30,10 @@ export async function POST(req: NextRequest) {
 
   try {
     if (session) {
+      console.log(session.user.id);
       const prescription = await prisma.prescription.create({
         data: {
-          userId: session?.user.id,
+          userId: session.user.id,
           patientName: values.patientName,
           patientAge: values.patientAge,
           patientGender: values.patientGender,
@@ -44,6 +45,8 @@ export async function POST(req: NextRequest) {
         },
       });
 
+      console.log(prescription);
+
       const req = await fetch(
         `http://localhost:5000/deploy-contract?data=${JSON.stringify(
           newMedicines
@@ -52,7 +55,14 @@ export async function POST(req: NextRequest) {
       const data = await req.text();
       console.log(data);
 
-      console.log(prescription);
+      const updatePrescription = await prisma.prescription.update({
+        where: { p_id: prescription.p_id },
+        data: {
+          address: data,
+        },
+      });
+
+      console.log(updatePrescription);
 
       return NextResponse.json(
         { message: "Prescription created" },
