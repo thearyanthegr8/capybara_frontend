@@ -58,22 +58,22 @@ export async function POST(req: NextRequest) {
 
       console.log(prescription);
 
-      const req = await fetch(
-        `http://localhost:5000/deploy-contract?data=${JSON.stringify(
-          newData
-        )}&pid=${prescription.p_id}`
-      );
-      const data = await req.text();
-      console.log(data);
+      // const req = await fetch(
+      //   `http://localhost:5000/deploy-contract?data=${JSON.stringify(
+      //     newData
+      //   )}&pid=${prescription.p_id}`
+      // );
+      // const data = await req.text();
+      // console.log(data);
 
-      const updatePrescription = await prisma.prescription.update({
-        where: { p_id: prescription.p_id },
-        data: {
-          address: data,
-        },
-      });
+      // const updatePrescription = await prisma.prescription.update({
+      //   where: { p_id: prescription.p_id },
+      //   data: {
+      //     address: data,
+      //   },
+      // });
 
-      console.log(updatePrescription);
+      // console.log(updatePrescription);
 
       return NextResponse.json(
         { message: "Prescription created" },
