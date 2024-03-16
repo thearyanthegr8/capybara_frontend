@@ -10,9 +10,7 @@ export async function POST(request: NextRequest) {
         p_id,
       },
       data: {
-        medicines: {
-          set: medicines,
-        },
+        medicines,
       },
     });
 

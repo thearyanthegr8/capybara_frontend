@@ -53,6 +53,7 @@ function Page() {
         const response = await axios.get(`/api/prescription/view?p_id=${p_id}`);
         setResponseCode(response.status);
         setPrescription(response.data);
+        setMedicines(response.data["medicines"]);
       } else {
         setUserSession(false);
         if (customer_code !== undefined) {
@@ -61,6 +62,7 @@ function Page() {
           );
           setResponseCode(response.status);
           setPrescription(response.data);
+          setMedicines(response.data["medicines"]);
         }
       }
     } catch (error) {
@@ -77,36 +79,41 @@ function Page() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [p_id, supabase.auth]);
 
-  useEffect(() => {
-    if (prescription) setMedicines(prescription["medicines"]);
-  }, [prescription]);
-
   const { toast } = useToast();
 
-  // async function updatePrescription() {
-  //   setLoading(true);
-  //   try {
-  //     const response = await axios.post(`/api/prescription/update`, {
-  //       p_id,
-  //       medicines,
-  //     });
+  async function updatePrescription() {
+    setLoading(true);
+    try {
+      const response = await axios.post(`/api/prescription/update`, {
+        p_id,
+        medicines,
+      });
 
-  //     toast({
-  //       title: "Prescription updated",
-  //       description: "Prescription updated successfully",
-  //     });
-  //     console.log(response);
-  //   } catch (error) {
-  //     toast({
-  //       title: "Error updating prescription",
-  //       description: "Error updating prescription",
-  //       variant: "destructive",
-  //     });
-  //     console.error("Error updating prescription:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
+      toast({
+        title: "Prescription updated",
+        description: "Prescription updated successfully",
+      });
+      console.log(response);
+    } catch (error) {
+      toast({
+        title: "Error updating prescription",
+        description: "Error updating prescription",
+        variant: "destructive",
+      });
+      console.error("Error updating prescription:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const updateQuantity = (index: number, value: number) => {
+    // Update the quantity of the medicine at the specified index
+    setMedicines((prevMedicines) => {
+      const updatedMedicines = [...prevMedicines];
+      updatedMedicines[index].totalQty = value;
+      return updatedMedicines;
+    });
+  };
 
   if (loading) {
     return (
@@ -163,19 +170,22 @@ function Page() {
             </TableHeader>
             <TableBody>
               {(prescription["medicines"] as any[]).map(
-                (x: any, index: number) => (
-                  <TableRow key={index}>
-                    <TableCell>{x["name"]}</TableCell>
-                    <TableCell>
-                      <Input
-                        value={medicines[index]["totalQty"]}
-                        onChange={(e) => {
-                          medicines[index]["totalQty"] = e.target.value;
-                        }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                )
+                (x: any, index: number) => {
+                  return (
+                    <TableRow key={index}>
+                      <TableCell>{x["name"]}</TableCell>
+                      <TableCell>
+                        <Input
+                          value={medicines[index]["totalQty"]}
+                          onChange={(e) =>
+                            updateQuantity(index, e.target.valueAsNumber)
+                          }
+                          type="number"
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                }
               )}
             </TableBody>
           </Table>
@@ -213,13 +223,13 @@ function Page() {
             </TableBody>
           </Table>
         )}
-        {/* {userSession && userType === "PHARMACIST" && (
+        {userSession && userType === "PHARMACIST" && (
           <div>
             <Button className="w-full" onClick={() => updatePrescription()}>
               Save
             </Button>
           </div>
-        )} */}
+        )}
       </div>
     );
   } else if (responseCode === 404) {
